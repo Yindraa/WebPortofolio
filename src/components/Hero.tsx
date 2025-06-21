@@ -16,18 +16,10 @@ import {
   Globe,
 } from "lucide-react";
 
-interface CursorTrail {
-  x: number;
-  y: number;
-  id: number;
-}
-
 const Hero: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [currentSpecialization, setCurrentSpecialization] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
-  const [isHovering, setIsHovering] = useState(false);
-  const trailIdRef = useRef(0);
 
   // 🖼️ YOUR LOCAL IMAGE PATH - Image should be in /public folder
   const profileImageUrl = "/Indra.jpg"; // This points to public/Indra.jpg
@@ -98,14 +90,6 @@ const Hero: React.FC = () => {
         <div className="absolute bottom-20 right-20 w-2 h-2 bg-green-400 rounded-full animate-float delay-3000 opacity-60 shadow-lg shadow-green-400/50"></div>
         <div className="absolute top-60 left-1/3 w-1.5 h-1.5 bg-cyan-400 rounded-full animate-float delay-4000 opacity-45 shadow-lg shadow-cyan-400/50"></div>
         <div className="absolute bottom-40 right-1/3 w-2 h-2 bg-yellow-400 rounded-full animate-float delay-5000 opacity-55 shadow-lg shadow-yellow-400/50"></div>
-
-        {/* Interactive grid pattern that responds to cursor */}
-        <div
-          className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)] transition-opacity duration-300"
-          style={{
-            opacity: isHovering ? 0.8 : 0.4,
-          }}
-        ></div>
 
         {/* Animated geometric shapes */}
         <div className="absolute top-1/3 right-1/4 w-16 h-16 border border-blue-400/20 rotate-45 animate-spin-slow"></div>
