@@ -86,12 +86,12 @@ const Contact: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-12">
           <div>
             <h3 className="text-2xl font-semibold mb-6 text-blue-600 dark:text-blue-400">
-              Let's Connect
+              {"Let's Connect"}
             </h3>
             <p className="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
-              I'm always open to discussing new opportunities, interesting
-              projects, or just having a chat about technology. Feel free to
-              reach out!
+              {
+                "I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology. Feel free to reach out!"
+              }
             </p>
 
             <div className="space-y-4">

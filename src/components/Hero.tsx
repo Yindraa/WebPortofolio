@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import {
   Github,
   Linkedin,
@@ -241,10 +242,13 @@ const Hero: React.FC = () => {
 
             {/* Profile Image or Placeholder */}
             <div className="absolute inset-5 bg-muted rounded-full flex items-center justify-center text-muted-foreground text-base font-bold group-hover:scale-105 transition-transform duration-500 overflow-hidden">
-              <img
+              <Image
                 src={profileImageUrl || "/placeholder.svg"}
                 alt="Made Narayindra"
+                width={152}
+                height={152}
                 className="w-full h-full object-cover rounded-full"
+                priority
                 onError={(e) => {
                   // Fallback to placeholder if image fails to load
                   const target = e.target as HTMLImageElement;
@@ -296,7 +300,7 @@ const Hero: React.FC = () => {
             </div>
 
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Hi, I'm{" "}
+              {"Hi, I'm "}
               <span className="relative inline-block group">
                 <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient-x drop-shadow-[0_0_15px_rgba(147,51,234,0.3)] group-hover:drop-shadow-[0_0_25px_rgba(147,51,234,0.5)] transition-all duration-500">
                   Made Narayindra
@@ -344,12 +348,13 @@ const Hero: React.FC = () => {
           {/* Enhanced Description - Smaller */}
           <div className="max-w-2xl mx-auto">
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-              Passionate about creating{" "}
+              {"Passionate about creating "}
               <span className="text-blue-600 font-semibold drop-shadow-[0_0_8px_rgba(59,130,246,0.3)] hover:drop-shadow-[0_0_12px_rgba(59,130,246,0.5)] transition-all duration-300">
                 innovative digital experiences
-              </span>{" "}
-              and building solutions that make a difference. Currently pursuing
-              my degree in Information Technology with expertise in{" "}
+              </span>
+              {
+                " and building solutions that make a difference. Currently pursuing my degree in Information Technology with expertise in "
+              }
               <span className="text-purple-600 font-semibold drop-shadow-[0_0_8px_rgba(147,51,234,0.3)] hover:drop-shadow-[0_0_12px_rgba(147,51,234,0.5)] transition-all duration-300">
                 modern web technologies
               </span>
@@ -360,10 +365,10 @@ const Hero: React.FC = () => {
           {/* Enhanced Action Buttons - Smaller */}
           <div className="flex flex-wrap justify-center gap-3 pt-6">
             <a
-              href="https://github.com/yourusername"
+              href="https://github.com/Yindraa"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex items-center gap-2 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 text-white dark:text-gray-900 px-6 py-3 rounded-xl hover:scale-105 transition-all duration-500 ease-out shadow-lg hover:shadow-xl overflow-hidden"
+              className="group relative flex items-center gap-2 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-900 dark:to-gray-700 text-white dark:text-gray-900 px-6 py-3 rounded-xl hover:scale-105 transition-all duration-500 ease-out shadow-lg hover:shadow-xl overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <Github
@@ -375,10 +380,10 @@ const Hero: React.FC = () => {
             </a>
 
             <a
-              href="https://linkedin.com/in/yourusername"
+              href="https://www.linkedin.com/in/made-narayindra-10aa24244"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:scale-105 transition-all duration-500 ease-out shadow-lg hover:shadow-xl overflow-hidden"
+              className="group relative flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-xl hover:scale-105 transition-all duration-500 ease-out shadow-lg hover:shadow-xl overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400/30 to-cyan-400/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <Linkedin
@@ -390,8 +395,8 @@ const Hero: React.FC = () => {
             </a>
 
             <a
-              href="mailto:made.narayindra@example.com"
-              className="group relative flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl hover:scale-105 transition-all duration-500 ease-out shadow-lg hover:shadow-xl overflow-hidden"
+              href="mailto:madenarayindra23@gmail.com"
+              className="group relative flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white px-6 py-3 rounded-xl hover:scale-105 transition-all duration-500 ease-out shadow-lg hover:shadow-xl overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-green-400/30 to-emerald-400/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <Mail

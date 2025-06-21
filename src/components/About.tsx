@@ -4,7 +4,7 @@ const About: React.FC = () => {
   return (
     <section
       id="about"
-      className="py-30 px-4 bg-muted/30 transition-colors duration-300"
+      className="py-28 px-4 bg-muted/30 transition-colors duration-300"
     >
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-foreground">
@@ -17,21 +17,19 @@ const About: React.FC = () => {
               My Journey
             </h3>
             <p className="text-muted-foreground mb-4 leading-relaxed">
-              I'm currently pursuing my Bachelor's degree in Information
-              Technology, with a passion for web development and software
-              engineering. My journey in tech started with curiosity about how
-              websites work, and it has evolved into a deep love for creating
-              digital solutions.
+              {
+                "I'm currently pursuing my Bachelor's degree in Information Technology, with a passion for web development and software engineering. My journey in tech started with curiosity about how websites work, and it has evolved into a deep love for creating digital solutions."
+              }
             </p>
             <p className="text-muted-foreground mb-4 leading-relaxed">
-              I enjoy working with modern technologies like React, Next.js, and
-              Node.js, and I'm always eager to learn new frameworks and tools
-              that can help me build better applications.
+              {
+                "I enjoy working with modern technologies like React, Next.js, and Node.js, and I'm always eager to learn new frameworks and tools that can help me build better applications."
+              }
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              When I'm not coding, you can find me exploring new technologies,
-              contributing to open-source projects, or working on personal
-              projects that challenge my skills.
+              {
+                "When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or working on personal projects that challenge my skills."
+              }
             </p>
           </div>
 
