@@ -1,26 +1,412 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* Tailwind v4 CSS Variables - Proper Implementation */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Ensure all sections inherit proper background colors */
+  section {
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Override any conflicting styles */
+  .bg-white {
+    background-color: hsl(var(--background)) !important;
+  }
+
+  .bg-gray-50 {
+    background-color: hsl(var(--muted)) !important;
+  }
+
+  .bg-gray-100 {
+    background-color: hsl(var(--accent)) !important;
+  }
+
+  .bg-gray-800 {
+    background-color: hsl(var(--muted)) !important;
+  }
+
+  .bg-gray-900 {
+    background-color: hsl(var(--background)) !important;
+  }
+
+  .bg-gray-950 {
+    background-color: hsl(var(--card)) !important;
+  }
+
+  /* Text color overrides */
+  .text-gray-900 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .text-gray-700 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .text-gray-600 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .text-gray-400 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .text-gray-300 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .text-white {
+    color: hsl(var(--primary-foreground)) !important;
+  }
+
+  /* Dark mode text overrides */
+  .dark .text-white {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .dark .text-gray-100 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .dark .text-gray-200 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .dark .text-gray-300 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .dark .text-gray-400 {
+    color: hsl(var(--muted-foreground)) !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom animations - Much smoother */
+@layer utilities {
+  @keyframes glow {
+    0%,
+    100% {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.6),
+        0 0 30px rgba(59, 130, 246, 0.4);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulse-slow {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  @keyframes bounce-slow {
+    0%,
+    100% {
+      transform: translateY(-20%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  @keyframes gradient-x {
+    0%,
+    100% {
+      background-size: 200% 200%;
+      background-position: left center;
+    }
+    50% {
+      background-size: 200% 200%;
+      background-position: right center;
+    }
+  }
+
+  @keyframes particle-float {
+    0%,
+    100% {
+      transform: translateY(0px) translateX(0px);
+    }
+    33% {
+      transform: translateY(-10px) translateX(5px);
+    }
+    66% {
+      transform: translateY(5px) translateX(-5px);
+    }
+  }
+
+  .animate-gradient-x {
+    animation: gradient-x 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .bg-size-200 {
+    background-size: 200% 200%;
+  }
+
+  .animate-glow {
+    animation: glow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-float {
+    animation: float 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-particle-float {
+    animation: particle-float 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 10s linear infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-bounce-slow {
+    animation: bounce-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Smooth underline utilities */
+  .underline-animate {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .underline-animate::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 1px;
+    transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left;
+  }
+
+  .underline-animate:hover::after,
+  .underline-animate:active::after {
+    width: 100%;
+  }
+
+  /* Navigation specific underline - Enhanced for all devices */
+  .nav-underline {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-underline::before {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 1px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nav-underline:hover::before,
+  .nav-underline:focus::before,
+  .nav-underline:active::before {
+    transform: scaleX(1);
+  }
+
+  /* Mobile nav underline - Enhanced with better touch support */
+  .mobile-nav-underline {
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+  }
+
+  .mobile-nav-underline::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 1px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left;
+  }
+
+  /* Multiple trigger states for better mobile support */
+  .mobile-nav-underline:hover::after,
+  .mobile-nav-underline:focus::after,
+  .mobile-nav-underline:active::after,
+  .mobile-nav-underline:focus-within::after,
+  .mobile-nav-underline.touched::after {
+    width: 100%;
+  }
+
+  /* Touch device optimizations */
+  @media (hover: none) and (pointer: coarse) {
+    /* Pure touch devices */
+    .nav-underline:active::before {
+      transform: scaleX(1);
+    }
+
+    .mobile-nav-underline:active::after,
+    .mobile-nav-underline:focus::after {
+      width: 100%;
+    }
+
+    .underline-animate:active::after {
+      width: 100%;
+    }
+
+    /* Faster animations on touch devices */
+    .mobile-nav-underline::after {
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  /* Hybrid devices (tablets with both touch and hover) */
+  @media (hover: hover) and (pointer: coarse) {
+    .mobile-nav-underline:hover::after {
+      width: 100%;
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .nav-underline::before {
+      left: 8px;
+      right: 8px;
+    }
+
+    .mobile-nav-underline::after {
+      bottom: -1px;
+    }
+  }
+
+  /* Force hardware acceleration for smoother animations */
+  .nav-underline::before,
+  .mobile-nav-underline::after,
+  .underline-animate::after {
+    will-change: transform, width;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+/* Custom scrollbar - Smoother */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent));
+}
+
+/* Ensure proper smooth transitions for all elements */
+* {
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform, filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
