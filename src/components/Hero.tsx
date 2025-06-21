@@ -26,8 +26,6 @@ const Hero: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [currentSpecialization, setCurrentSpecialization] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [cursorTrail, setCursorTrail] = useState<CursorTrail[]>([]);
   const [isHovering, setIsHovering] = useState(false);
   const trailIdRef = useRef(0);
 
@@ -77,53 +75,6 @@ const Hero: React.FC = () => {
     }, 4000);
     return () => clearInterval(interval);
   }, [mounted, specializations.length]);
-
-  // Cursor tracking and trail effect - ONLY within Hero section
-  useEffect(() => {
-    if (!mounted) return;
-
-    const heroSection = document.querySelector("#hero-section");
-    if (!heroSection) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = heroSection.getBoundingClientRect();
-      const isInHero =
-        e.clientY >= rect.top &&
-        e.clientY <= rect.bottom &&
-        e.clientX >= rect.left &&
-        e.clientX <= rect.right;
-
-      if (isInHero) {
-        setMousePosition({ x: e.clientX, y: e.clientY });
-        setIsHovering(true);
-
-        // Add new trail point
-        const newTrail: CursorTrail = {
-          x: e.clientX,
-          y: e.clientY,
-          id: trailIdRef.current++,
-        };
-
-        setCursorTrail((prev) => [...prev.slice(-8), newTrail]);
-      } else {
-        setIsHovering(false);
-        setCursorTrail([]);
-      }
-    };
-
-    const handleMouseLeave = () => {
-      setIsHovering(false);
-      setCursorTrail([]);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    heroSection.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      heroSection.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, [mounted]);
 
   const currentSpec = specializations[currentSpecialization];
   const CurrentIcon = currentSpec.icon;
