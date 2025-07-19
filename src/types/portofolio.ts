@@ -1,9 +1,12 @@
 export interface Project {
   id: string;
   title: string;
+  category: string;
   description: string;
+  longDescription: string;
+  galleryImages: string[];
   technologies: string[];
-  githubUrl?: string;
+  githubUrl: string;
   liveUrl?: string;
   imageUrl: string;
 }

@@ -3,8 +3,34 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Code2, Sparkles } from "lucide-react";
+import { Menu, X, Code2 } from "lucide-react"; // 'Sparkles' dihapus dari sini
 import { ThemeToggle } from "./theme-toggle";
+
+// Menambahkan beberapa gaya CSS kustom untuk animasi
+const GlobalStyles = () => (
+  <style jsx global>{`
+    .nav-link-underline {
+      position: relative;
+      text-decoration: none;
+    }
+    .nav-link-underline::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      transform: scaleX(0);
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: hsl(var(--primary));
+      transform-origin: bottom center;
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .nav-link-underline:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom center;
+    }
+  `}</style>
+);
 
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -12,7 +38,7 @@ const Navigation: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20); // Mengubah threshold menjadi lebih kecil untuk efek lebih cepat
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -27,133 +53,107 @@ const Navigation: React.FC = () => {
   ];
 
   return (
-    <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-700 ease-out ${
-        scrolled
-          ? "bg-background/85 backdrop-blur-xl border-b border-border/40 shadow-xl shadow-primary/10"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex justify-between items-center py-4">
-          {/* Logo/Brand - Proper text glow effect */}
-          <Link
-            href="/"
-            className="group flex items-center gap-3 text-2xl font-bold relative"
-          >
-            {/* Animated icon with proper glow */}
-            <div className="relative transition-all duration-500 ease-out">
-              <Code2
-                size={28}
-                className="text-blue-600 group-hover:text-purple-600 transition-all duration-500 ease-out group-hover:rotate-12 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(147,51,234,0.6)]"
-              />
-              <Sparkles
-                size={16}
-                className="absolute -top-1 -right-1 text-purple-500 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out animate-pulse group-hover:drop-shadow-[0_0_4px_rgba(147,51,234,0.8)]"
-              />
-            </div>
-
-            {/* Text with proper glow effect that follows text shape */}
-            <span className="relative transition-all duration-500 ease-out underline-animate">
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent bg-size-200 animate-gradient-x group-hover:drop-shadow-[0_0_12px_rgba(147,51,234,0.8)] transition-all duration-500 ease-out">
-                Portfolio
-              </span>
-            </span>
-          </Link>
-
-          {/* Desktop Navigation - Smoother animations */}
-          <div className="hidden md:flex items-center space-x-2">
-            {navItems.map((item, index) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="nav-underline px-4 py-2 text-foreground/70 hover:text-foreground font-medium transition-all duration-500 ease-out rounded-xl hover:bg-accent/30 group"
-                style={{
-                  animationDelay: `${index * 150}ms`,
-                  transitionDelay: `${index * 50}ms`,
-                }}
-              >
-                {/* Text with smooth scaling and glow */}
-                <span className="relative z-10 transition-all duration-500 ease-out group-hover:scale-105 group-hover:drop-shadow-[0_0_6px_rgba(59,130,246,0.5)]">
-                  {item.label}
-                </span>
-
-                {/* Subtle hover background with smooth scaling */}
-                <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out scale-90 group-hover:scale-100"></span>
-              </Link>
-            ))}
-
-            {/* Enhanced Theme Toggle with smooth separator */}
-            <div className="ml-6 pl-6 border-l border-border/20 transition-all duration-500 ease-out">
-              <ThemeToggle />
-            </div>
-          </div>
-
-          {/* Mobile Navigation Button - Smoother transitions */}
-          <div className="md:hidden flex items-center space-x-4">
-            <ThemeToggle />
-            <button
-              className="group relative p-3 rounded-xl hover:bg-accent/30 transition-all duration-500 ease-out hover:scale-105"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle navigation"
+    <>
+      <GlobalStyles />
+      <nav
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ease-in-out ${
+          scrolled || isOpen
+            ? "bg-background/80 backdrop-blur-lg border-b border-border/20 shadow-md"
+            : "bg-transparent border-b border-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
+            <Link
+              href="/"
+              className="group flex items-center gap-2 text-xl font-bold"
             >
-              <div className="relative w-6 h-6">
-                <Menu
+              <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors duration-300">
+                <Code2
                   size={24}
-                  className={`absolute inset-0 text-foreground transition-all duration-500 ease-out ${
-                    isOpen
-                      ? "rotate-180 opacity-0 scale-75"
-                      : "rotate-0 opacity-100 scale-100"
-                  }`}
-                />
-                <X
-                  size={24}
-                  className={`absolute inset-0 text-foreground transition-all duration-500 ease-out ${
-                    isOpen
-                      ? "rotate-0 opacity-100 scale-100"
-                      : "-rotate-180 opacity-0 scale-75"
-                  }`}
+                  className="text-primary transition-all duration-300 ease-in-out group-hover:rotate-12 group-hover:scale-110"
                 />
               </div>
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Portfolio
+              </span>
+            </Link>
 
-              {/* Smooth button glow effect */}
-              <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out scale-90 group-hover:scale-100"></span>
-            </button>
+            {/* Navigasi Desktop */}
+            <div className="hidden md:flex items-center space-x-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="nav-link-underline text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Aksi di Desktop */}
+            <div className="hidden md:flex items-center gap-4">
+              <ThemeToggle />
+              <a
+                href="#contact"
+                className="px-4 py-2 text-sm font-semibold bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-sm hover:shadow-lg"
+              >
+                Hire Me
+              </a>
+            </div>
+
+            {/* Tombol Menu Mobile */}
+            <div className="md:hidden flex items-center">
+              <ThemeToggle />
+              <button
+                className="ml-4 p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label="Toggle navigation"
+              >
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Mobile Navigation Menu - Much smoother animations */}
+        {/* Menu Mobile */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-700 ease-out ${
-            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            isOpen ? "max-h-screen border-t border-border/20" : "max-h-0"
           }`}
         >
-          <div className="py-6 border-t border-border/20 bg-background/95 backdrop-blur-xl rounded-b-3xl shadow-xl shadow-primary/5 transition-all duration-500 ease-out">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navItems.map((item, index) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="mobile-nav-underline group flex items-center py-4 px-6 text-foreground/70 hover:text-foreground hover:bg-accent/20 transition-all duration-500 ease-out rounded-xl mx-3 font-medium"
+                className="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-300"
                 onClick={() => setIsOpen(false)}
                 style={{
-                  transform: isOpen
-                    ? "translateX(0) translateY(0)"
-                    : "translateX(-30px) translateY(-10px)",
+                  transform: isOpen ? "translateY(0)" : "translateY(-10px)",
                   opacity: isOpen ? 1 : 0,
-                  transition: `all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${
-                    index * 100 + 200
-                  }ms`,
+                  transition: `transform 0.3s ease-in-out ${
+                    index * 75
+                  }ms, opacity 0.3s ease-in-out ${index * 75}ms`,
                 }}
               >
-                <span className="relative transition-all duration-500 ease-out group-hover:drop-shadow-[0_0_6px_rgba(59,130,246,0.5)]">
-                  {item.label}
-                </span>
+                {item.label}
               </Link>
             ))}
+            <div className="pt-4 px-3">
+              <a
+                href="#contact"
+                className="block w-full text-center px-4 py-3 text-base font-semibold bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-sm hover:shadow-lg"
+              >
+                Hire Me
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 };
 

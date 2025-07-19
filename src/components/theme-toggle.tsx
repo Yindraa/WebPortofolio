@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { AnimatePresence, motion } from "framer-motion";
 
 export function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -12,46 +13,57 @@ export function ThemeToggle() {
     setMounted(true);
   }, []);
 
-  // Show a static placeholder during SSR to prevent hydration mismatch
   if (!mounted) {
-    return (
-      <div className="w-11 h-11 rounded-xl bg-muted/40 flex items-center justify-center border border-border/20 transition-all duration-500 ease-out">
-        <Sun className="h-5 w-5 text-muted-foreground" />
-      </div>
-    );
+    // Render placeholder yang cocok dengan ukuran tombol
+    return <div className="w-14 h-8 rounded-full bg-secondary" />;
   }
 
-  const isDark = resolvedTheme === "dark";
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "light" ? "dark" : "light");
+  };
 
   return (
-    <button
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="group relative w-11 h-11 rounded-xl bg-muted/40 hover:bg-accent/50 border border-border/20 hover:border-border/40 transition-all duration-500 ease-out flex items-center justify-center hover:scale-105 hover:shadow-lg hover:shadow-primary/10"
-      aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+    <motion.button
+      onClick={toggleTheme}
+      // Menambahkan animasi saat tombol ditekan
+      whileTap={{ scale: 0.95 }}
+      className="relative w-14 h-8 flex items-center rounded-full p-1 cursor-pointer bg-secondary shadow-inner border border-border/50" // Menambahkan border untuk kontras
+      aria-label="Toggle theme"
     >
-      {/* Smooth background glow effect */}
-      <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out scale-90 group-hover:scale-100"></span>
-
-      {/* Icons with very smooth transitions and glow */}
-      <div className="relative w-6 h-6">
-        <Sun
-          className={`absolute inset-0 h-5 w-5 text-amber-500 transition-all duration-700 ease-out ${
-            isDark
-              ? "rotate-0 opacity-100 scale-100 drop-shadow-[0_0_8px_rgba(245,158,11,0.6)]"
-              : "rotate-180 opacity-0 scale-75"
-          }`}
-        />
-        <Moon
-          className={`absolute inset-0 h-5 w-5 text-blue-400 transition-all duration-700 ease-out ${
-            isDark
-              ? "-rotate-180 opacity-0 scale-75"
-              : "rotate-0 opacity-100 scale-100 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
-          }`}
-        />
-      </div>
-
-      {/* Smooth ripple effect */}
-      <span className="absolute inset-0 rounded-xl opacity-0 group-active:opacity-100 bg-primary/10 transition-all duration-300 ease-out scale-95 group-active:scale-100"></span>
-    </button>
+      {/* Lingkaran yang bergerak dan berisi ikon */}
+      <motion.div
+        className="absolute w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-md"
+        layout
+        // Menyempurnakan animasi spring agar lebih natural
+        transition={{ type: "spring", stiffness: 600, damping: 35 }}
+        style={{
+          left: resolvedTheme === "light" ? "4px" : "calc(100% - 28px)",
+        }}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          {resolvedTheme === "light" ? (
+            <motion.div
+              key="sun"
+              initial={{ scale: 0, rotate: -90 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, rotate: 90 }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+            >
+              <Sun size={14} className="text-primary-foreground" />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="moon"
+              initial={{ scale: 0, rotate: 90 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, rotate: -90 }}
+              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+            >
+              <Moon size={14} className="text-primary-foreground" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.button>
   );
 }
