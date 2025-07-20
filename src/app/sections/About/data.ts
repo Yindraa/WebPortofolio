@@ -4,17 +4,17 @@ import { Code2, Palette, Monitor, Rocket, GraduationCap } from "lucide-react";
 
 export const carouselImages = [
   {
-    src: "https://placehold.co/400x400/1f2937/ffffff?text=Coding+Setup",
+    src: null,
     alt: "My coding workspace",
     caption: "My daily coding environment",
   },
   {
-    src: "https://placehold.co/400x400/1f2937/ffffff?text=Project+Work",
+    src: null,
     alt: "Working on projects",
     caption: "Building amazing projects",
   },
   {
-    src: "https://placehold.co/400x400/1f2937/ffffff?text=Team+Collab",
+    src: null,
     alt: "Team collaboration",
     caption: "Collaborating with teams",
   },

@@ -2,7 +2,12 @@
 
 import type React from "react";
 import { useState, useEffect } from "react";
-import { motion, useSpring, AnimatePresence, Variants } from "framer-motion";
+import {
+  motion,
+  useSpring,
+  AnimatePresence,
+  type Variants,
+} from "framer-motion";
 
 const GlobalCursor: React.FC = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -28,6 +33,15 @@ const GlobalCursor: React.FC = () => {
     if (!isMounted) return;
 
     const handleMouseMove = (e: MouseEvent) => {
+      // FIX: Check if we're over the hero section and skip cursor updates
+      const target = e.target as HTMLElement;
+      const heroSection = document.getElementById("hero");
+
+      if (heroSection && heroSection.contains(target)) {
+        // Don't interfere with hero section interactions
+        return;
+      }
+
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
       followerX.set(e.clientX);
@@ -36,6 +50,13 @@ const GlobalCursor: React.FC = () => {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      const heroSection = document.getElementById("hero");
+
+      // FIX: Don't interfere with hero section
+      if (heroSection && heroSection.contains(target)) {
+        return;
+      }
+
       if (
         target.tagName === "A" ||
         target.tagName === "BUTTON" ||
@@ -47,6 +68,13 @@ const GlobalCursor: React.FC = () => {
 
     const handleMouseOut = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      const heroSection = document.getElementById("hero");
+
+      // FIX: Don't interfere with hero section
+      if (heroSection && heroSection.contains(target)) {
+        return;
+      }
+
       if (
         target.tagName === "A" ||
         target.tagName === "BUTTON" ||
@@ -59,9 +87,10 @@ const GlobalCursor: React.FC = () => {
     const handleMouseEnter = () => setIsVisible(true);
     const handleMouseLeave = () => setIsVisible(false);
 
-    window.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseover", handleMouseOver);
-    document.addEventListener("mouseout", handleMouseOut);
+    // FIX: Use passive listeners to avoid blocking
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    document.addEventListener("mouseover", handleMouseOver, { passive: true });
+    document.addEventListener("mouseout", handleMouseOut, { passive: true });
     document.body.addEventListener("mouseenter", handleMouseEnter);
     document.body.addEventListener("mouseleave", handleMouseLeave);
 
@@ -114,13 +143,14 @@ const GlobalCursor: React.FC = () => {
             animate="visible"
             exit="hidden"
             custom={isPointer}
-            // PERBAIKAN: z-index ditingkatkan
-            className="fixed z-[9999] pointer-events-none rounded-full"
+            // FIX: Lower z-index and ensure pointer events are disabled
+            className="fixed z-40 pointer-events-none rounded-full"
             style={{
               x: followerX,
               y: followerY,
               left: isPointer ? -20 : -16,
               top: isPointer ? -20 : -16,
+              pointerEvents: "none", // Explicitly disable
             }}
           />
           <motion.div
@@ -128,13 +158,14 @@ const GlobalCursor: React.FC = () => {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            // PERBAIKAN: z-index ditingkatkan
-            className="fixed w-2 h-2 z-[9999] pointer-events-none rounded-full bg-primary"
+            // FIX: Lower z-index and ensure pointer events are disabled
+            className="fixed w-2 h-2 z-40 pointer-events-none rounded-full bg-primary"
             style={{
               x: cursorX,
               y: cursorY,
               left: -4,
               top: -4,
+              pointerEvents: "none", // Explicitly disable
             }}
           />
         </>

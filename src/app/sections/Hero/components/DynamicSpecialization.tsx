@@ -17,7 +17,7 @@ const DynamicSpecialization: React.FC = () => {
       }, 500); // Waktu jeda sebelum teks baru muncul
     }, 4000); // Durasi setiap teks ditampilkan
     return () => clearInterval(interval);
-  }, []); // PERBAIKAN: Dependency array diubah menjadi kosong
+  }, []);
 
   const currentSpec = specializations[currentSpecialization];
   const CurrentIcon = currentSpec.icon;

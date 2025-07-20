@@ -12,11 +12,15 @@ import {
   Zap,
   Users,
 } from "lucide-react";
-import { motion, useMotionValue, useTransform, Variants } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  type Variants,
+} from "framer-motion";
 import DynamicSpecialization from "./components/DynamicSpecialization";
 import ProfileImage from "./components/ProfileImage";
 
-// Varian untuk animasi staggered (bertingkat)
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -43,11 +47,9 @@ const itemVariants: Variants = {
 const Hero: React.FC = () => {
   const profileImageUrl = "/Indra.jpg";
 
-  // Logika untuk efek 3D pada gambar profil
   const profileRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  // PERBAIKAN: Meningkatkan jangkauan rotasi agar lebih terlihat
   const rotateX = useTransform(y, [-150, 150], [15, -15]);
   const rotateY = useTransform(x, [-150, 150], [-15, 15]);
 
@@ -68,35 +70,36 @@ const Hero: React.FC = () => {
 
   return (
     <section
-      id="hero-section"
-      className="min-h-screen flex items-center justify-center pt-32 px-4 relative overflow-hidden bg-background"
+      id="hero"
+      className="min-h-screen flex items-center justify-center pt-32 px-4 relative overflow-hidden"
+      style={{
+        backgroundColor: "hsl(var(--background))",
+        zIndex: 10,
+      }}
     >
-      {/* Elemen Latar Belakang */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-pink-400/20 to-orange-400/20 rounded-full blur-3xl animate-pulse-slow delay-1000"></div>
-      </div>
-
       <motion.div
-        className="max-w-6xl mx-auto text-center relative"
+        className="max-w-6xl mx-auto text-center relative w-full"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
+        style={{
+          backgroundColor: "hsl(var(--background))",
+          zIndex: 20,
+        }}
       >
-        {/* Bagian Profil dengan Animasi 3D Hover */}
+        {/* Profile Image Section */}
         <motion.div
           variants={itemVariants}
-          className="mb-10 relative"
-          ref={profileRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
           style={{ perspective: "1000px" }}
+          className="mb-10 flex justify-center"
         >
           <motion.div
-            className="relative w-48 h-48 mx-auto mb-6 group"
+            ref={profileRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            // PERBAIKAN: Menyesuaikan transisi spring agar lebih responsif
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
+            className="relative w-48 h-48 group cursor-pointer"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-spin-slow opacity-75 group-hover:opacity-100"></div>
             <div
@@ -106,8 +109,14 @@ const Hero: React.FC = () => {
                 animationDuration: "15s",
               }}
             ></div>
-            <div className="absolute inset-3 bg-background rounded-full shadow-2xl"></div>
-            <div className="absolute inset-5 bg-muted rounded-full flex items-center justify-center overflow-hidden">
+            <div
+              className="absolute inset-3 rounded-full shadow-2xl"
+              style={{ backgroundColor: "hsl(var(--background))" }}
+            ></div>
+            <div
+              className="absolute inset-5 rounded-full flex items-center justify-center overflow-hidden"
+              style={{ backgroundColor: "hsl(var(--muted))" }}
+            >
               <ProfileImage src={profileImageUrl} alt="Made Narayindra" />
             </div>
             <Sparkles
@@ -123,7 +132,7 @@ const Hero: React.FC = () => {
           </motion.div>
         </motion.div>
 
-        {/* Konten Utama dengan Animasi */}
+        {/* Status Badge */}
         <motion.div variants={itemVariants}>
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/50 rounded-full border border-border/30 backdrop-blur-sm">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -133,6 +142,7 @@ const Hero: React.FC = () => {
           </div>
         </motion.div>
 
+        {/* Main Heading */}
         <motion.h1
           variants={itemVariants}
           className="text-3xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mt-4"
@@ -143,10 +153,12 @@ const Hero: React.FC = () => {
           </span>
         </motion.h1>
 
+        {/* Dynamic Specialization */}
         <motion.div variants={itemVariants}>
           <DynamicSpecialization />
         </motion.div>
 
+        {/* Description */}
         <motion.p
           variants={itemVariants}
           className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto"
@@ -158,7 +170,7 @@ const Hero: React.FC = () => {
           {" and building solutions that make a difference."}
         </motion.p>
 
-        {/* Tombol Aksi dengan Animasi Hover */}
+        {/* Action Buttons */}
         <motion.div
           variants={itemVariants}
           className="flex flex-wrap justify-center gap-4 pt-6"
@@ -206,14 +218,16 @@ const Hero: React.FC = () => {
           </motion.a>
         </motion.div>
 
-        {/* ELEMEN BARU: Statistik Kunci */}
+        {/* Stats Section - FIX: Ensure consistent background */}
         <motion.div
           className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-12 max-w-2xl mx-auto"
-          variants={containerVariants} // Menggunakan kembali container untuk stagger
+          variants={containerVariants}
+          style={{ backgroundColor: "hsl(var(--background))" }}
         >
           <motion.div
             variants={itemVariants}
-            className="text-center bg-accent/30 p-4 rounded-lg"
+            className="text-center p-4 rounded-lg"
+            style={{ backgroundColor: "hsl(var(--accent) / 0.3)" }}
           >
             <Briefcase className="mx-auto mb-2 text-primary" />
             <div className="text-2xl font-bold text-foreground">3+</div>
@@ -223,7 +237,8 @@ const Hero: React.FC = () => {
           </motion.div>
           <motion.div
             variants={itemVariants}
-            className="text-center bg-accent/30 p-4 rounded-lg"
+            className="text-center p-4 rounded-lg"
+            style={{ backgroundColor: "hsl(var(--accent) / 0.3)" }}
           >
             <Zap className="mx-auto mb-2 text-primary" />
             <div className="text-2xl font-bold text-foreground">50+</div>
@@ -233,7 +248,8 @@ const Hero: React.FC = () => {
           </motion.div>
           <motion.div
             variants={itemVariants}
-            className="text-center bg-accent/30 p-4 rounded-lg col-span-2 md:col-span-1"
+            className="text-center p-4 rounded-lg col-span-2 md:col-span-1"
+            style={{ backgroundColor: "hsl(var(--accent) / 0.3)" }}
           >
             <Users className="mx-auto mb-2 text-primary" />
             <div className="text-2xl font-bold text-foreground">15+</div>
